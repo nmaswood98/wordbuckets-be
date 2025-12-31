@@ -1,0 +1,16 @@
+{
+	"compatibility_date": "2025-10-08",
+	"main": "src/index.ts",
+	"name": "wordbuckets-be",
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_id": "ae0753b9-ba95-4887-9c23-da5cb996273a",
+			"database_name": "wordbuckets-db"
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
+}
