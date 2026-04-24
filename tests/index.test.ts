@@ -8,8 +8,16 @@ type MockDailyGameRow = {
 	order: string;
 	groupA: string;
 	groupB: string;
-	colorA: string;
-	colorB: string;
+	colorAId: number;
+	colorBId: number;
+	colorAHex: string;
+	colorABorderColor: string;
+	colorAHighlightColor: string;
+	colorATextColor: string;
+	colorBHex: string;
+	colorBBorderColor: string;
+	colorBHighlightColor: string;
+	colorBTextColor: string;
 	groupAWords: string;
 	groupBWords: string;
 };
@@ -50,8 +58,16 @@ describe("daily game endpoint", () => {
 			order: '["A","B","A","B"]',
 			groupA: "animals",
 			groupB: "fruits",
-			colorA: "#3B82F6",
-			colorB: "#F97316",
+			colorAId: 1,
+			colorBId: 1,
+			colorAHex: "#FFF9EF",
+			colorABorderColor: "#FFE4B5",
+			colorAHighlightColor: "#FFE1AF",
+			colorATextColor: "#FCC874",
+			colorBHex: "#FFF9EF",
+			colorBBorderColor: "#FFE4B5",
+			colorBHighlightColor: "#FFE1AF",
+			colorBTextColor: "#FCC874",
 			groupAWords: '["tiger","otter","eagle","panda","whale"]',
 			groupBWords: '["apple","mango","peach","grape","lemon"]',
 		});
@@ -70,13 +86,25 @@ describe("daily game endpoint", () => {
 				{
 					key: "A",
 					groupID: "animals",
-					color: "#3B82F6",
+					colorScheme: {
+						id: 1,
+						hex: "#FFF9EF",
+						borderColor: "#FFE4B5",
+						highlightColor: "#FFE1AF",
+						textColor: "#FCC874",
+					},
 					words: ["tiger", "otter", "eagle", "panda", "whale"],
 				},
 				{
 					key: "B",
 					groupID: "fruits",
-					color: "#F97316",
+					colorScheme: {
+						id: 1,
+						hex: "#FFF9EF",
+						borderColor: "#FFE4B5",
+						highlightColor: "#FFE1AF",
+						textColor: "#FCC874",
+					},
 					words: ["apple", "mango", "peach", "grape", "lemon"],
 				},
 			],
@@ -149,8 +177,16 @@ describe("daily game endpoint", () => {
 			order: "not json",
 			groupA: "animals",
 			groupB: "fruits",
-			colorA: "#3B82F6",
-			colorB: "#F97316",
+			colorAId: 1,
+			colorBId: 1,
+			colorAHex: "#FFF9EF",
+			colorABorderColor: "#FFE4B5",
+			colorAHighlightColor: "#FFE1AF",
+			colorATextColor: "#FCC874",
+			colorBHex: "#FFF9EF",
+			colorBBorderColor: "#FFE4B5",
+			colorBHighlightColor: "#FFE1AF",
+			colorBTextColor: "#FCC874",
 			groupAWords: '["tiger"]',
 			groupBWords: '["apple"]',
 		});

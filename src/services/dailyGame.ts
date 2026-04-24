@@ -27,13 +27,23 @@ export async function getDailyGame(env: Env, date: string) {
 				daily_game."order",
 				daily_game.groupA,
 				daily_game.groupB,
-				daily_game.colorA,
-				daily_game.colorB,
+				daily_game.colorA AS colorAId,
+				daily_game.colorB AS colorBId,
+				color_a.hex AS colorAHex,
+				color_a.borderColor AS colorABorderColor,
+				color_a.highlightColor AS colorAHighlightColor,
+				color_a.textColor AS colorATextColor,
+				color_b.hex AS colorBHex,
+				color_b.borderColor AS colorBBorderColor,
+				color_b.highlightColor AS colorBHighlightColor,
+				color_b.textColor AS colorBTextColor,
 				group_a.words AS groupAWords,
 				group_b.words AS groupBWords
 			FROM daily_game
 			JOIN "group" AS group_a ON group_a.groupID = daily_game.groupA
 			JOIN "group" AS group_b ON group_b.groupID = daily_game.groupB
+			JOIN color_scheme AS color_a ON color_a.id = daily_game.colorA
+			JOIN color_scheme AS color_b ON color_b.id = daily_game.colorB
 			LIMIT 1
 		`,
 	)
@@ -57,13 +67,25 @@ export async function getDailyGame(env: Env, date: string) {
 			{
 				key: "A",
 				groupID: row.groupA,
-				color: row.colorA,
+				colorScheme: {
+					id: row.colorAId,
+					hex: row.colorAHex,
+					borderColor: row.colorABorderColor,
+					highlightColor: row.colorAHighlightColor,
+					textColor: row.colorATextColor,
+				},
 				words: groupAWords,
 			},
 			{
 				key: "B",
 				groupID: row.groupB,
-				color: row.colorB,
+				colorScheme: {
+					id: row.colorBId,
+					hex: row.colorBHex,
+					borderColor: row.colorBBorderColor,
+					highlightColor: row.colorBHighlightColor,
+					textColor: row.colorBTextColor,
+				},
 				words: groupBWords,
 			},
 		],
