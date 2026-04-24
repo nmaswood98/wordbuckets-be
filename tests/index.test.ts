@@ -8,16 +8,16 @@ type MockDailyGameRow = {
 	order: string;
 	groupA: string;
 	groupB: string;
-	colorAId: number;
-	colorBId: number;
-	colorAHex: string;
-	colorABorderColor: string;
-	colorAHighlightColor: string;
-	colorATextColor: string;
-	colorBHex: string;
-	colorBBorderColor: string;
-	colorBHighlightColor: string;
-	colorBTextColor: string;
+	colorAId: number | null;
+	colorBId: number | null;
+	colorAHex: string | null;
+	colorABorderColor: string | null;
+	colorAHighlightColor: string | null;
+	colorATextColor: string | null;
+	colorBHex: string | null;
+	colorBBorderColor: string | null;
+	colorBHighlightColor: string | null;
+	colorBTextColor: string | null;
 	groupAWords: string;
 	groupBWords: string;
 };
@@ -112,6 +112,54 @@ describe("daily game endpoint", () => {
 		expect(response.status).toBe(200);
 		expect(response.headers.get("content-type")).toBe("application/json");
 		expect(bind).toHaveBeenCalledWith("2026-04-24");
+	});
+
+	it("returns null color schemes and nullable color values", async () => {
+		const { env } = createEnv({
+			id: 1,
+			name: "Sample Daily Game",
+			date: "2026-04-24",
+			order: '["A","B"]',
+			groupA: "animals",
+			groupB: "fruits",
+			colorAId: null,
+			colorBId: 2,
+			colorAHex: null,
+			colorABorderColor: null,
+			colorAHighlightColor: null,
+			colorATextColor: null,
+			colorBHex: null,
+			colorBBorderColor: null,
+			colorBHighlightColor: "#FFE1AF",
+			colorBTextColor: null,
+			groupAWords: '["tiger"]',
+			groupBWords: '["apple"]',
+		});
+
+		const response = await worker.fetch(
+			new Request("https://wordbuckets.example/daily-game"),
+			env,
+		);
+
+		await expect(response.json()).resolves.toMatchObject({
+			groups: [
+				{
+					key: "A",
+					colorScheme: null,
+				},
+				{
+					key: "B",
+					colorScheme: {
+						id: 2,
+						hex: null,
+						borderColor: null,
+						highlightColor: "#FFE1AF",
+						textColor: null,
+					},
+				},
+			],
+		});
+		expect(response.status).toBe(200);
 	});
 
 	it("returns a 404 when today's daily game is missing", async () => {

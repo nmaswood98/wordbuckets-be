@@ -1,9 +1,9 @@
 export type ColorScheme = {
 	id: number;
-	hex: string;
-	borderColor: string;
-	highlightColor: string;
-	textColor: string;
+	hex: string | null;
+	borderColor: string | null;
+	highlightColor: string | null;
+	textColor: string | null;
 };
 
 export type DailyGameRow = {
@@ -13,16 +13,16 @@ export type DailyGameRow = {
 	order: string;
 	groupA: string;
 	groupB: string;
-	colorAId: number;
-	colorBId: number;
-	colorAHex: string;
-	colorABorderColor: string;
-	colorAHighlightColor: string;
-	colorATextColor: string;
-	colorBHex: string;
-	colorBBorderColor: string;
-	colorBHighlightColor: string;
-	colorBTextColor: string;
+	colorAId: number | null;
+	colorBId: number | null;
+	colorAHex: string | null;
+	colorABorderColor: string | null;
+	colorAHighlightColor: string | null;
+	colorATextColor: string | null;
+	colorBHex: string | null;
+	colorBBorderColor: string | null;
+	colorBHighlightColor: string | null;
+	colorBTextColor: string | null;
 	groupAWords: string;
 	groupBWords: string;
 };
@@ -30,7 +30,7 @@ export type DailyGameRow = {
 export type DailyGameGroup = {
 	key: "A" | "B";
 	groupID: string;
-	colorScheme: ColorScheme;
+	colorScheme: ColorScheme | null;
 	words: string[];
 };
 

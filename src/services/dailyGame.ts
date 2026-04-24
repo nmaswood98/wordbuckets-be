@@ -1,4 +1,8 @@
-import type { DailyGameResponse, DailyGameRow } from "../types/dailyGame";
+import type {
+	ColorScheme,
+	DailyGameResponse,
+	DailyGameRow,
+} from "../types/dailyGame";
 
 export function getTodayInNewYork() {
 	const parts = new Intl.DateTimeFormat("en-CA", {
@@ -42,12 +46,13 @@ export async function getDailyGame(env: Env, date: string) {
 			FROM daily_game
 			JOIN "group" AS group_a ON group_a.groupID = daily_game.groupA
 			JOIN "group" AS group_b ON group_b.groupID = daily_game.groupB
-			JOIN color_scheme AS color_a ON color_a.id = daily_game.colorA
-			JOIN color_scheme AS color_b ON color_b.id = daily_game.colorB
+			LEFT JOIN color_scheme AS color_a ON color_a.id = daily_game.colorA
+			LEFT JOIN color_scheme AS color_b ON color_b.id = daily_game.colorB
+			WHERE daily_game.date = ?
 			LIMIT 1
 		`,
 	)
-//		.bind(date)
+		.bind(date)
 		.first<DailyGameRow>();
 
 	if (!row) {
@@ -67,27 +72,47 @@ export async function getDailyGame(env: Env, date: string) {
 			{
 				key: "A",
 				groupID: row.groupA,
-				colorScheme: {
-					id: row.colorAId,
-					hex: row.colorAHex,
-					borderColor: row.colorABorderColor,
-					highlightColor: row.colorAHighlightColor,
-					textColor: row.colorATextColor,
-				},
+				colorScheme: toColorScheme(
+					row.colorAId,
+					row.colorAHex,
+					row.colorABorderColor,
+					row.colorAHighlightColor,
+					row.colorATextColor,
+				),
 				words: groupAWords,
 			},
 			{
 				key: "B",
 				groupID: row.groupB,
-				colorScheme: {
-					id: row.colorBId,
-					hex: row.colorBHex,
-					borderColor: row.colorBBorderColor,
-					highlightColor: row.colorBHighlightColor,
-					textColor: row.colorBTextColor,
-				},
+				colorScheme: toColorScheme(
+					row.colorBId,
+					row.colorBHex,
+					row.colorBBorderColor,
+					row.colorBHighlightColor,
+					row.colorBTextColor,
+				),
 				words: groupBWords,
 			},
 		],
 	} satisfies DailyGameResponse;
+}
+
+function toColorScheme(
+	id: number | null,
+	hex: string | null,
+	borderColor: string | null,
+	highlightColor: string | null,
+	textColor: string | null,
+): ColorScheme | null {
+	if (id === null) {
+		return null;
+	}
+
+	return {
+		id,
+		hex,
+		borderColor,
+		highlightColor,
+		textColor,
+	};
 }
